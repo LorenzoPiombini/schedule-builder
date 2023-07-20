@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -38,7 +39,7 @@ public class Shift {
     @Column(name = "end_time")
     private LocalTime endTime;
     
-    @ManyToMany(mappedBy = "shifts")
+    @ManyToMany(mappedBy = "shifts", cascade = CascadeType.ALL)
     private List<Employee> employees = new ArrayList<>();
 
   

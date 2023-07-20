@@ -25,7 +25,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/scheduleItem")
+@RequestMapping("v1/scheduleItem")
 public class ScheduleItemController {
     
     ScheduleItemServiceImp scheduleItemService;

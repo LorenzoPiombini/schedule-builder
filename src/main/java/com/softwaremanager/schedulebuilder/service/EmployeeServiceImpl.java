@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.softwaremanager.schedulebuilder.Entity.Employee;
+import com.softwaremanager.schedulebuilder.Entity.Shift;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateEmployeeException;
 import com.softwaremanager.schedulebuilder.Exception.EmployeeNotFoundException;
 import com.softwaremanager.schedulebuilder.repository.EmployeeRepository;
@@ -49,6 +50,11 @@ public class EmployeeServiceImpl implements EmployeeService {
       return (List<Employee>) employeeRepo.findAll();
    }
 
+   @Override
+   public List<Shift> getAllShiftsForAEmployee(Long employeeId) {
+     Employee employee = getEmployee(employeeId);
+     return employee.getShifts();
+   }
    
  
   
@@ -92,6 +98,8 @@ public class EmployeeServiceImpl implements EmployeeService {
           }
       }
    }
+
+   
 
    
 

@@ -1,7 +1,7 @@
 package com.softwaremanager.schedulebuilder.web;
 
 import java.util.List;
-import java.util.Set;
+
 
 
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 
 
 @RestController
-@RequestMapping("/employee")
+@RequestMapping("v1/employee")
 @AllArgsConstructor
 public class EmployeeController {
    
@@ -62,9 +62,8 @@ public class EmployeeController {
     }
 
     @GetMapping("/{employeeId}/shifts")
-    public ResponseEntity<Set<Shift>> getShifts(@PathVariable Long id){
-        //implement
-       return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<List<Shift>> getShifts(@PathVariable Long employeeId){
+       return new ResponseEntity<>(service.getAllShiftsForAEmployee(employeeId),HttpStatus.OK);
     }
 
    

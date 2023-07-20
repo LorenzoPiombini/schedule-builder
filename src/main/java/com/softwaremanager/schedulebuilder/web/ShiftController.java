@@ -23,7 +23,7 @@ import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("/shift")
+@RequestMapping("v1/shift")
 public class ShiftController {
     
     
