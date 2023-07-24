@@ -18,13 +18,13 @@ import com.softwaremanager.schedulebuilder.Entity.Employee;
 import com.softwaremanager.schedulebuilder.Entity.Shift;
 import com.softwaremanager.schedulebuilder.service.EmployeeServiceImpl;
 
+
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
-
+@AllArgsConstructor
 @RestController
 @RequestMapping("v1/employee")
-@AllArgsConstructor
 public class EmployeeController {
    
     
