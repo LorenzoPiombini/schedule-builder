@@ -18,13 +18,19 @@ import com.softwaremanager.schedulebuilder.Entity.Employee;
 import com.softwaremanager.schedulebuilder.Entity.Shift;
 import com.softwaremanager.schedulebuilder.service.EmployeeServiceImpl;
 
-
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @RestController
 @RequestMapping("v1/employee")
+@Tag(name= "Employee Controller", 
+ description="""
+        Controller dedicated to manage Employees entity,
+        all CRUD operations are managed by this Controller's Endpoints.    
+         """
+ )
 public class EmployeeController {
    
     

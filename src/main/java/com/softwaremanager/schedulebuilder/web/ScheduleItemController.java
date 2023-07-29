@@ -4,6 +4,7 @@ import com.softwaremanager.schedulebuilder.Entity.ScheduleItem;
 import com.softwaremanager.schedulebuilder.Entity.Shift;
 import com.softwaremanager.schedulebuilder.service.ScheduleItemServiceImp;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -26,6 +27,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("v1/scheduleItem")
+@Tag(name= "Schedule Item Controller",
+description = """
+        Controller in charge of managing the Schedule item( in other words: a day in your schedule)
+        CRUD operations all covered by this Controller`s endppoints.
+        """)
 public class ScheduleItemController {
     
     ScheduleItemServiceImp scheduleItemService;

@@ -17,6 +17,7 @@ import com.softwaremanager.schedulebuilder.Entity.Employee;
 import com.softwaremanager.schedulebuilder.Entity.Shift;
 import com.softwaremanager.schedulebuilder.service.ShiftServiceImpl;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 
 
@@ -24,6 +25,12 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("v1/shift")
+@Tag(name= "Shift Controller",
+description = """
+        all the CRUD operations regarding  Shifts entity, are managed by this Controller`s endpoint
+        when you create a Shift, keep in mind that you have to assign a Schedule Item to the
+        shift entiy.
+        """)
 public class ShiftController {
     
     
