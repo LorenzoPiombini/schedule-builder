@@ -28,6 +28,9 @@ public class ScheduleBuilderApplication implements CommandLineRunner{
 		SpringApplication.run(ScheduleBuilderApplication.class, args);
 	}
 
+	// this code populates the in memory (volatile) database H2 with data 
+	// this is to help the developing project only.
+	
 	@Override
 	public void run(String... args) throws Exception {
 		Employee[] employees = new Employee[] {
