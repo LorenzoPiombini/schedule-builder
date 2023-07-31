@@ -2,7 +2,9 @@ package com.softwaremanager.schedulebuilder.web;
 import java.util.List;
 
 
+
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,8 +18,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.softwaremanager.schedulebuilder.Entity.Employee;
 import com.softwaremanager.schedulebuilder.Entity.Shift;
 import com.softwaremanager.schedulebuilder.service.ShiftServiceImpl;
+import com.softwaremanager.schedulebuilder.Exception.ErrorResponse;
 
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+
 import lombok.AllArgsConstructor;
 
 
@@ -37,42 +47,69 @@ public class ShiftController {
     ShiftServiceImpl shiftService;
 
      
-     
-     @GetMapping("/{shiftId}")
+     @Operation(summary = "retrives the shift with the id provided", 
+        description ="""
+              returns a JSON object with the shift entity.
+             """)
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Succesfully retrive the shidtshift", content = @Content(schema = @Schema(implementation = Shift.class))),
+        @ApiResponse(responseCode="404", description = "Shift not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+     @GetMapping(value = "/{shiftId}", produces = MediaType.APPLICATION_JSON_VALUE) 
     public ResponseEntity<Shift> showShift(@PathVariable Long shiftId){
         return new ResponseEntity<Shift>(shiftService.getShift(shiftId), HttpStatus.OK);
     }
     
 
-
-    @PostMapping("/scheduleItem/{scheduleItemId}")
+    @Operation(summary = "creates a new shift entity", description = """
+            This endpoint create a new Shift enity assigning already the shift to a
+            Schedule item {ScheduleItemId}.
+            """)
+    @PostMapping(value ="/scheduleItem/{scheduleItemId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Shift> createShiftNoEmployee(@RequestBody Shift shift, @PathVariable Long scheduleItemId){
         return new ResponseEntity<>(shiftService.saveShift(shift,  scheduleItemId),HttpStatus.CREATED);
     }
 
-     @PutMapping("/{shiftId}")
+    @Operation(summary = "update a shift entity", description = """
+            this endpoint will update The Sift entity whose id is provided
+            """)
+     @PutMapping(value = "/{shiftId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Shift> updateShift(@RequestBody Shift shift, @PathVariable Long shiftId){
         return new ResponseEntity<Shift>( shiftService.updateShift(shift.getStartTime(), shift.getEndTime(), shiftId),HttpStatus.OK);
     }
 
-    @PutMapping("/{shiftId}/employee/{employeeId}/scheduleItem/{scheduleItemId}")
+    @Operation(summary = "Assign a shift to an Employee", description = """
+            you can assign an Employee {employeeId}to a shift {shiftId} entity using this endpoint,
+            do not forget that a shift is attached to a Schedule item{scheduleItemId}
+            """)
+    @PutMapping(value = "/{shiftId}/employee/{employeeId}/scheduleItem/{scheduleItemId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Shift> addShiftToEmployeeAndScheduleITem(@PathVariable Long shiftId, @PathVariable Long employeeId, @PathVariable Long scheduleItemId){
         return new ResponseEntity<>(shiftService.addShiftToEmployeeAndScheduleItem(shiftId, employeeId, scheduleItemId),HttpStatus.CREATED);
     }
 
-     @DeleteMapping("/{shiftId}")
+    @Operation(summary = "delete a shift", description = """
+            delate a Shift enity, this end point will be avaibale only to those useres whose role is set to ADMIN
+            """)
+    @DeleteMapping(value = "/{shiftId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<HttpStatus> deleteShift(@PathVariable Long shiftId){
         shiftService.deleteShift(shiftId);
         return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/all")
+    @Operation(summary = "shows all shift present in your schedule", description = """
+            return a list of shifts, a JSON array object.
+            """)
+    @GetMapping(value ="/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Shift>> showAllShifts(){
         List<Shift> shifts = shiftService.getAllShifts();
         return new ResponseEntity<List<Shift>>(shifts, HttpStatus.OK);
     }
 
-    @GetMapping("/{shiftId}/employee")
+    @Operation(summary = "shows all employee with the same shift", description = """
+            it returns a list of Employees entities that share the same shift,
+            you`ll refere to the the shift with the {shiftId}.
+            """)
+    @GetMapping(value= "/{shiftId}/employee", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Employee>> getEmployeeShifts(@PathVariable Long shiftId){
         return new ResponseEntity<>(shiftService.getEmployeeShift(shiftId), HttpStatus.OK);
     }
