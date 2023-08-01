@@ -2,7 +2,7 @@ package com.softwaremanager.schedulebuilder.service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 
 import org.springframework.stereotype.Service;
 
@@ -46,6 +46,7 @@ public class ScheduleItemServiceImp implements ScheduleItemService {
 
     @Override
     public void deleteScheduleItem(Long id) {
+        System.out.println(id);
         scheduleItemRepository.deleteById(id);
     }
 
@@ -63,8 +64,8 @@ public class ScheduleItemServiceImp implements ScheduleItemService {
     }
 
     @Override
-    public Set<ScheduleItem> getScheduleItems() {
-        return (Set<ScheduleItem>) scheduleItemRepository.findAll();
+    public List<ScheduleItem> getScheduleItems() {
+        return (List<ScheduleItem>) scheduleItemRepository.findAll();
     }
 
     @Override
