@@ -11,7 +11,7 @@ public interface ScheduleItemService {
     ScheduleItem saveScheduleItem(ScheduleItem scheduleItem);
     ScheduleItem updateScheduleItem(Long scheduleItemId, ScheduleItem scheduleItem);
     void deleteScheduleItem(Long id);
-    ScheduleItem addShiftToScheduleItem(Long shiftId, Long scheduleItemId, Long employeeId);
+    ScheduleItem addShiftToScheduleItem(Long shiftId, Long scheduleItemId);
     List<ScheduleItem> getScheduleItems();
     List<Shift> getScheduleItemShifts(Long id);
     

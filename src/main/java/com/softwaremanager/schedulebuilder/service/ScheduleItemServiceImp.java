@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.softwaremanager.schedulebuilder.Entity.Employee;
 import com.softwaremanager.schedulebuilder.Entity.ScheduleItem;
 import com.softwaremanager.schedulebuilder.Entity.Shift;
 import com.softwaremanager.schedulebuilder.Exception.ScheduleItemNotFoundException;
@@ -46,20 +45,17 @@ public class ScheduleItemServiceImp implements ScheduleItemService {
 
     @Override
     public void deleteScheduleItem(Long id) {
-        System.out.println(id);
         scheduleItemRepository.deleteById(id);
     }
 
     @Override
-    public ScheduleItem addShiftToScheduleItem(Long shiftId, Long scheduleItemId, Long employeeId) {
+    public ScheduleItem addShiftToScheduleItem(Long shiftId, Long scheduleItemId) {
         ScheduleItem scheduleItem = getSchduleItem(scheduleItemId);
         Optional<Shift> shift = shiftRepository.findById(shiftId);
-        Optional<Employee> employee = employeeRepository.findById(employeeId);
-        Employee unwrappedEmployee = EmployeeServiceImpl.optionalUnwrapper(employee, employeeId);
         Shift unwrappedShift = ShiftServiceImpl.unwrapShift(shift, shiftId);
-        unwrappedShift.getEmployees().add(unwrappedEmployee);
-        scheduleItem.getShifts().add(unwrappedShift);
-        unwrappedShift.getEmployees().add(unwrappedEmployee);
+
+        scheduleItem.getShiftInTheScheduleItem().add(unwrappedShift);
+       
         return scheduleItemRepository.save(scheduleItem);
     }
 
@@ -71,7 +67,7 @@ public class ScheduleItemServiceImp implements ScheduleItemService {
     @Override
     public List<Shift> getScheduleItemShifts(Long id) {
         ScheduleItem scheduleItem = getSchduleItem(id);
-        return scheduleItem.getShifts();
+        return scheduleItem.getShiftInTheScheduleItem();
     }
 
     static ScheduleItem  unwrapScheduleItem(Optional<ScheduleItem> entity, Long scheduleItemId){

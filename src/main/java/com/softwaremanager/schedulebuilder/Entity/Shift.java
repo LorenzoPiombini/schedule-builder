@@ -1,8 +1,9 @@
 package com.softwaremanager.schedulebuilder.Entity;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.List;
+
+
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -11,8 +12,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,13 +41,21 @@ public class Shift {
     private LocalTime endTime;
     
     @ManyToMany(mappedBy = "shifts", cascade = CascadeType.ALL)
-    private List<Employee> employees = new ArrayList<>();
-
-  
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "schedule_item_id", referencedColumnName = "id")
-    private ScheduleItem scheduleItem;
+    private List<Employee> employees;
 
     
+    @ManyToMany
+    @JoinTable(
+        name = "shifts_schedule_items",
+        joinColumns = @JoinColumn(name = "shift_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name="scheduleItem_id", referencedColumnName = "id")
+
+    )
+    private List<ScheduleItem> scheduleItems;
+
+    public Shift(LocalTime start, LocalTime end){
+        this.startTime = start;
+        this.endTime = end;
+    }
 
 }

@@ -1,6 +1,6 @@
 package com.softwaremanager.schedulebuilder;
 import java.time.LocalDate;
-
+import java.time.LocalTime;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -8,9 +8,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.softwaremanager.schedulebuilder.Constant.Role;
 import com.softwaremanager.schedulebuilder.Entity.Employee;
+import com.softwaremanager.schedulebuilder.Entity.Shift;
 import com.softwaremanager.schedulebuilder.Entity.ScheduleItem;
 import com.softwaremanager.schedulebuilder.repository.EmployeeRepository;
 import com.softwaremanager.schedulebuilder.repository.ScheduleItemRepository;
+import com.softwaremanager.schedulebuilder.repository.ShiftRepository;
 
 import lombok.AllArgsConstructor;
 
@@ -23,6 +25,7 @@ public class ScheduleBuilderApplication implements CommandLineRunner{
 	
 	EmployeeRepository employeeRepository;
 	ScheduleItemRepository scheduleItemRepository;
+	ShiftRepository shiftRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(ScheduleBuilderApplication.class, args);
@@ -85,6 +88,20 @@ public class ScheduleBuilderApplication implements CommandLineRunner{
 
 		for (int i = 0; i < week.length; i++) {
 			scheduleItemRepository.save(week[i]);
+		}
+
+		Shift[] shifts = new Shift[]{
+			new Shift(LocalTime.of(10, 0, 0), LocalTime.of(16, 0, 0)),
+			new Shift(LocalTime.of(11, 0, 0), LocalTime.of(17, 0, 0)),
+			new Shift(LocalTime.of(11, 0, 0), LocalTime.of(20, 30, 0)),
+			new Shift(LocalTime.of(16, 0, 0), LocalTime.of(20, 30, 0)),
+			new Shift(LocalTime.of(10, 0, 0), LocalTime.of(20, 30, 0)),
+			new Shift(LocalTime.of(10, 0, 0), LocalTime.of(17, 0, 0)),
+			new Shift(LocalTime.of(9, 30, 0), LocalTime.of(20, 30, 0))
+		};
+
+		for (int index = 0; index < shifts.length; index++) {
+			shiftRepository.save(shifts[index]);
 		}
 	}
 	

@@ -17,6 +17,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.softwaremanager.schedulebuilder.Exception.ScheduleItemNotFoundException;
+import com.softwaremanager.schedulebuilder.Exception.ShiftNotAssociatedToEmployee;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateEmployeeException;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateShiftExeption;
 import com.softwaremanager.schedulebuilder.Exception.EmployeeNotFoundException;
@@ -36,7 +37,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         return new ResponseEntity<>(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
     }
     
-    @ExceptionHandler({EmployeeNotFoundException.class, ShiftNotFoundException.class, ScheduleItemNotFoundException.class})
+    @ExceptionHandler({EmployeeNotFoundException.class, ShiftNotFoundException.class, ScheduleItemNotFoundException.class, ShiftNotAssociatedToEmployee.class})
     public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex){
            return new ResponseEntity<>(new ErrorResponse(Arrays.asList(ex.getMessage())), HttpStatus.NOT_FOUND);
     }

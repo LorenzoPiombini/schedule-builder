@@ -1,7 +1,7 @@
 package com.softwaremanager.schedulebuilder.Entity;
 
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 
@@ -77,7 +77,7 @@ public class Employee {
         joinColumns = @JoinColumn(name ="employee_id", referencedColumnName="id"),
         inverseJoinColumns = @JoinColumn(name="shift_id", referencedColumnName = "id")
     )
-    private List<Shift> shifts = new ArrayList<>();
+    private List<Shift> shifts;
 
     public Employee(String firstName, String lastName, int i, Double hourlyRate, String jobTitle, Role role){
         this.firstName = firstName;

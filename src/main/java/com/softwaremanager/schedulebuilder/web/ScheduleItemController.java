@@ -86,20 +86,35 @@ public class ScheduleItemController {
         scheduleItemService.deleteScheduleItem(scheduleItemId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
+    
+    @Operation(summary = "Update Schedule Item", description = """
+            Update or change your day entity with this endpoint
+            """)
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "ScheduleItem succesfully updated", content = @Content(schema= @Schema(implementation = ScheduleItem.class))),
+        @ApiResponse(responseCode = "404", description = "Schedule Item not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })        
     @PutMapping(value = "/{scheduleItemId}", produces =  MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ScheduleItem> updateScheduleItem(@PathVariable Long scheduleItemId, @RequestBody ScheduleItem scheduleItem){
         return new ResponseEntity<>(scheduleItemService.updateScheduleItem(scheduleItemId, scheduleItem),HttpStatus.OK);
     }
 
-    @PutMapping(value = "/{scheduleItemId}/employee/{employeeId}/shift/{shiftId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    //review this end point 
+    @PutMapping(value = "/{scheduleItemId}/shift/{shiftId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ScheduleItem> addSchiftToScheduleItem(@PathVariable Long scheduleItemId, @PathVariable Long shiftId, @PathVariable Long employeeId){
-        return new ResponseEntity<>(scheduleItemService.addShiftToScheduleItem(shiftId, scheduleItemId, employeeId),HttpStatus.OK);
+        return new ResponseEntity<>(scheduleItemService.addShiftToScheduleItem(shiftId, scheduleItemId),HttpStatus.OK);
     }
 
-
+    @Operation(summary = "retrive all the shifts for a Day(Schedule Item)", description = """
+            End point returns List of shifts for a given Schedule Item, if there are no shift, 
+            the list will be an empty JSON object '[]'
+            """)
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Succesfully retrived the Shift list", content = @Content(schema= @Schema(implementation = List.class))),
+        @ApiResponse(responseCode = "404", description = "Schedule item not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
     @GetMapping(value = "/{scheduleItemId}/shifts", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Shift>> getSchduleItemSchifts(@PathVariable Long scheduleItemId ){
+    public ResponseEntity<List<Shift>> getSchduleItemShifts(@PathVariable Long scheduleItemId ){
         return new ResponseEntity<>(scheduleItemService.getScheduleItemShifts(scheduleItemId),HttpStatus.OK);
     }
     
