@@ -55,7 +55,9 @@ public class ScheduleItemServiceImp implements ScheduleItemService {
         Shift unwrappedShift = ShiftServiceImpl.unwrapShift(shift, shiftId);
 
         scheduleItem.getShiftInTheScheduleItem().add(unwrappedShift);
-       
+        unwrappedShift.getScheduleItems().add(scheduleItem);
+        shiftRepository.save(unwrappedShift);
+
         return scheduleItemRepository.save(scheduleItem);
     }
 

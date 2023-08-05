@@ -3,6 +3,7 @@ package com.softwaremanager.schedulebuilder.web;
 import com.softwaremanager.schedulebuilder.Entity.ScheduleItem;
 import com.softwaremanager.schedulebuilder.Entity.Shift;
 import com.softwaremanager.schedulebuilder.Exception.ErrorResponse;
+import com.softwaremanager.schedulebuilder.service.LaborCostServiceImpl;
 import com.softwaremanager.schedulebuilder.service.ScheduleItemServiceImp;
 
 import io.swagger.v3.oas.annotations.media.Content;
@@ -32,6 +33,8 @@ import lombok.AllArgsConstructor;
 
 
 
+
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("v1/scheduleItem")
@@ -43,7 +46,8 @@ description = """
 public class ScheduleItemController {
     
     ScheduleItemServiceImp scheduleItemService;
-    
+    LaborCostServiceImpl laborCostService;
+
     @Operation(summary = "Retrive a schedule Item", description = """
             you can retrive a Schedule Item with this endpoint if what you are trying to fetch 
             is not present and exeption will be thrown and an error code of 404
@@ -101,7 +105,7 @@ public class ScheduleItemController {
 
     //review this end point 
     @PutMapping(value = "/{scheduleItemId}/shift/{shiftId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ScheduleItem> addSchiftToScheduleItem(@PathVariable Long scheduleItemId, @PathVariable Long shiftId, @PathVariable Long employeeId){
+    public ResponseEntity<ScheduleItem> addSchiftToScheduleItem(@PathVariable Long scheduleItemId, @PathVariable Long shiftId){
         return new ResponseEntity<>(scheduleItemService.addShiftToScheduleItem(shiftId, scheduleItemId),HttpStatus.OK);
     }
 
@@ -117,6 +121,15 @@ public class ScheduleItemController {
     public ResponseEntity<List<Shift>> getSchduleItemShifts(@PathVariable Long scheduleItemId ){
         return new ResponseEntity<>(scheduleItemService.getScheduleItemShifts(scheduleItemId),HttpStatus.OK);
     }
+ 
+    @GetMapping(value="/{scheduleItemId}/laborcost")
+    public ResponseEntity<Double> getLaborCost(@PathVariable Long scheduleItemId){
+        Double result = laborCostService.laborCost(scheduleItemId);
+        return new ResponseEntity<Double>(result, HttpStatus.OK);
+    }
+
+    
+    
     
 
 }

@@ -67,7 +67,13 @@ public class ShiftServiceImpl implements ShiftService {
 
    @Override
    public void deleteShift(Long shiftId) {
-      shiftRepo.deleteById(shiftId);
+      Optional<Shift> shift = shiftRepo.findById(shiftId);
+      if(shift.isPresent()){
+         shiftRepo.deleteById(shiftId);
+      } else {
+         throw new ShiftNotFoundException(shiftId);
+      }
+      
    }
 
 

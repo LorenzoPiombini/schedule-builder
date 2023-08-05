@@ -21,6 +21,7 @@ import com.softwaremanager.schedulebuilder.Exception.ShiftNotAssociatedToEmploye
 import com.softwaremanager.schedulebuilder.Exception.DuplicateEmployeeException;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateShiftExeption;
 import com.softwaremanager.schedulebuilder.Exception.EmployeeNotFoundException;
+import com.softwaremanager.schedulebuilder.Exception.NoDataForLaborCostException;
 import com.softwaremanager.schedulebuilder.Exception.ErrorResponse;
 
 import com.softwaremanager.schedulebuilder.Exception.ShiftNotFoundException;
@@ -37,7 +38,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         return new ResponseEntity<>(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
     }
     
-    @ExceptionHandler({EmployeeNotFoundException.class, ShiftNotFoundException.class, ScheduleItemNotFoundException.class, ShiftNotAssociatedToEmployee.class})
+    @ExceptionHandler({EmployeeNotFoundException.class, ShiftNotFoundException.class, ScheduleItemNotFoundException.class, ShiftNotAssociatedToEmployee.class, NoDataForLaborCostException.class})
     public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex){
            return new ResponseEntity<>(new ErrorResponse(Arrays.asList(ex.getMessage())), HttpStatus.NOT_FOUND);
     }

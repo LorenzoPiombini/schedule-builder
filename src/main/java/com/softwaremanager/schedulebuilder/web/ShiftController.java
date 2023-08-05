@@ -86,18 +86,9 @@ public class ShiftController {
         return new ResponseEntity<>(shiftService.addShiftToEmployee(shiftId, employeeId),HttpStatus.CREATED);
     }
 
-    @Operation(summary = "add a shift to a day (ScheduleItem)", description = """
-            using this endpoint allows you to add a shift to a specific day(scheduleItem)
-            """)
-    @ApiResponses(value={
-        @ApiResponse(responseCode="200", description = "succesfully add the shift to a specif scheduleItem", content = @Content(schema = @Schema(implementation = Shift.class))),
-        @ApiResponse(responseCode = "404", description = "ScheduleItem and/or Shift not found", content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
-    })
-    @PutMapping(value = "/{shiftId}/scheduleItem/{scheduleItemId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Shift> addShiftToScheduleItem(@PathVariable Long scheduleItemId, @PathVariable Long shiftId ){
-        return new ResponseEntity<Shift>(shiftService.addShiftToScheduleItem(shiftId, scheduleItemId), HttpStatus.OK);
-    }
+    
 
+    @Operation(summary = "Delete a shift for a specific Employee")
     @DeleteMapping(value = "/{shiftId}/employee/{employeeId}")
     public ResponseEntity<HttpStatus> deleteShiftFromEmployee(@PathVariable Long shiftId, @PathVariable Long employeeId){
         shiftService.deleteShftAssociatedWithEmployee(shiftId, employeeId);
