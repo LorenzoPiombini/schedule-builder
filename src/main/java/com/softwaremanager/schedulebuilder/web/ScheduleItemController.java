@@ -1,8 +1,10 @@
 package com.softwaremanager.schedulebuilder.web;
 
+import com.softwaremanager.schedulebuilder.ComputingClasses.LaborCost;
 import com.softwaremanager.schedulebuilder.Entity.ScheduleItem;
 import com.softwaremanager.schedulebuilder.Entity.Shift;
 import com.softwaremanager.schedulebuilder.Exception.ErrorResponse;
+import com.softwaremanager.schedulebuilder.Exception.NoDataForLaborCostException;
 import com.softwaremanager.schedulebuilder.service.LaborCostServiceImpl;
 import com.softwaremanager.schedulebuilder.service.ScheduleItemServiceImp;
 
@@ -103,7 +105,7 @@ public class ScheduleItemController {
         return new ResponseEntity<>(scheduleItemService.updateScheduleItem(scheduleItemId, scheduleItem),HttpStatus.OK);
     }
 
-    //review this end point 
+     
     @PutMapping(value = "/{scheduleItemId}/shift/{shiftId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ScheduleItem> addSchiftToScheduleItem(@PathVariable Long scheduleItemId, @PathVariable Long shiftId){
         return new ResponseEntity<>(scheduleItemService.addShiftToScheduleItem(shiftId, scheduleItemId),HttpStatus.OK);
@@ -122,6 +124,13 @@ public class ScheduleItemController {
         return new ResponseEntity<>(scheduleItemService.getScheduleItemShifts(scheduleItemId),HttpStatus.OK);
     }
  
+    @Operation(summary = "retrive the labor cost of a Schedule Item (day)", description = """
+            this endpoint returns the labor cost regarding a specific scheduleItem, that is, the sum of all shift
+            """)
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Succesfully compute the labor cost", content = @Content(schema = @Schema(implementation = LaborCost.class))),
+        @ApiResponse(responseCode="404", description="No data to perform the labor cost computation", content = @Content(schema = @Schema(implementation = NoDataForLaborCostException.class)))
+    })
     @GetMapping(value="/{scheduleItemId}/laborcost")
     public ResponseEntity<Double> getLaborCost(@PathVariable Long scheduleItemId){
         Double result = laborCostService.laborCost(scheduleItemId);

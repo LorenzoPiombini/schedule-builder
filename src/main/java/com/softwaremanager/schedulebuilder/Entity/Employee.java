@@ -7,7 +7,7 @@ import java.util.List;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.softwaremanager.schedulebuilder.Constant.Role;
+import com.softwaremanager.schedulebuilder.Constant.*;
 
 
 import jakarta.persistence.Column;
@@ -63,6 +63,9 @@ public class Employee {
     @NotBlank(message="Please enter a valid JobTitle e.i.: \"Manager\" ")
     @Column(name = "job_title")
     private String jobTitle;
+    
+
+    private int timeCardEmployeeId;
 
     
     @Enumerated(EnumType.STRING)
@@ -87,5 +90,22 @@ public class Employee {
         this.jobTitle = jobTitle;
         this.role = role;
     }
+
+    
+
+    //this code set up a unique timeCard code for each employee
+    // when the Employee class is loaded in memory
+
+    private void setTimeCardEmployeeId(Long id){
+        this.timeCardEmployeeId = Constant.BASE_TIME_CARD_ID + id.intValue();
+         
+         
+    }
+
+    public void setTimeCArdEmployeeId(){
+      setTimeCardEmployeeId(this.id);  
+    } 
+    //-------------------------------------------------------
+
 
 }

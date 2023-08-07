@@ -73,6 +73,12 @@ public class ScheduleBuilderApplication implements CommandLineRunner{
 		};
 
 		for (int i = 0; i < employees.length; i++) {
+			// we save twice each employee entity
+			//to compute the timeCardEmployeeId whic is compute
+			// base on the entity id, the later is generated only the first time
+			// you saved the entity to the database
+			employeeRepository.save(employees[i]);
+			employees[i].setTimeCArdEmployeeId();
 			employeeRepository.save(employees[i]);
 		}
 
