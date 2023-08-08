@@ -9,7 +9,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softwaremanager.schedulebuilder.Constant.*;
 
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,6 +20,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -82,6 +83,12 @@ public class Employee {
     )
     private List<Shift> shifts;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
+    private List<TimeCard> timeCards;
+
+
+   
     public Employee(String firstName, String lastName, int i, Double hourlyRate, String jobTitle, Role role){
         this.firstName = firstName;
         this.lastName = lastName;
@@ -94,16 +101,9 @@ public class Employee {
     
 
     //this code set up a unique timeCard code for each employee
-    // when the Employee class is loaded in memory
 
-    private void setTimeCardEmployeeId(Long id){
-        this.timeCardEmployeeId = Constant.BASE_TIME_CARD_ID + id.intValue();
-         
-         
-    }
-
-    public void setTimeCArdEmployeeId(){
-      setTimeCardEmployeeId(this.id);  
+    public void setTimeCardEmployeeId(){
+      this.timeCardEmployeeId = Constant.BASE_TIME_CARD_ID + this.id.intValue();  
     } 
     //-------------------------------------------------------
 

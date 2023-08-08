@@ -11,9 +11,20 @@ public interface TimeCardRepository extends CrudRepository<TimeCard, Long> {
     
     default TimeCard clockIn(Employee employee){
         TimeCard timeCard = new TimeCard();
+        
         timeCard.setClockIn(LocalDateTime.now());
         timeCard.setEmployee(employee);
-
+        
         return timeCard;
     }
+
+    default TimeCard clockOut(TimeCard timeCard){
+        timeCard.setCloclOut(LocalDateTime.now());
+        return timeCard;
+    }
+
+
+
+
+    
 }

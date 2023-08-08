@@ -20,11 +20,13 @@ import com.softwaremanager.schedulebuilder.Exception.ScheduleItemNotFoundExcepti
 import com.softwaremanager.schedulebuilder.Exception.ShiftNotAssociatedToEmployee;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateEmployeeException;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateShiftExeption;
+import com.softwaremanager.schedulebuilder.Exception.EmployeeAlreadyClockedInException;
 import com.softwaremanager.schedulebuilder.Exception.EmployeeNotFoundException;
 import com.softwaremanager.schedulebuilder.Exception.NoDataForLaborCostException;
 import com.softwaremanager.schedulebuilder.Exception.ErrorResponse;
 
 import com.softwaremanager.schedulebuilder.Exception.ShiftNotFoundException;
+import com.softwaremanager.schedulebuilder.Exception.TimeCardNotFoundException;
 
 @ControllerAdvice
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
@@ -38,7 +40,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         return new ResponseEntity<>(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
     }
     
-    @ExceptionHandler({EmployeeNotFoundException.class, ShiftNotFoundException.class, ScheduleItemNotFoundException.class, ShiftNotAssociatedToEmployee.class, NoDataForLaborCostException.class})
+    @ExceptionHandler({EmployeeNotFoundException.class, ShiftNotFoundException.class, ScheduleItemNotFoundException.class, ShiftNotAssociatedToEmployee.class, NoDataForLaborCostException.class, TimeCardNotFoundException.class})
     public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex){
            return new ResponseEntity<>(new ErrorResponse(Arrays.asList(ex.getMessage())), HttpStatus.NOT_FOUND);
     }
@@ -46,6 +48,12 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     @ExceptionHandler({DuplicateShiftExeption.class, DuplicateEmployeeException.class})
     public ResponseEntity<Object> handleDuplicateShidts(RuntimeException ex){
         return new ResponseEntity<Object>(new ErrorResponse(Arrays.asList(ex.getMessage())), HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler({EmployeeAlreadyClockedInException.class})
+    public ResponseEntity<ErrorResponse> handleEmployeeAlreadyClockIn(RuntimeException ex){
+        return new ResponseEntity<ErrorResponse>(new ErrorResponse(Arrays.asList(ex.getMessage())), HttpStatus.BAD_REQUEST);
     }
         
 

@@ -5,4 +5,5 @@ import com.softwaremanager.schedulebuilder.Entity.TimeCard;
 
 public interface TimeCardService {
    TimeCard clockIn(Employee employee);
+   TimeCard clockOut(Long timeCardId);
 }

@@ -78,7 +78,7 @@ public class ScheduleBuilderApplication implements CommandLineRunner{
 			// base on the entity id, the later is generated only the first time
 			// you saved the entity to the database
 			employeeRepository.save(employees[i]);
-			employees[i].setTimeCArdEmployeeId();
+			employees[i].setTimeCardEmployeeId();
 			employeeRepository.save(employees[i]);
 		}
 

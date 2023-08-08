@@ -38,8 +38,6 @@ import lombok.AllArgsConstructor;
 @Tag(name= "Shift Controller",
 description = """
         all the CRUD operations regarding  Shifts entity, are managed by this Controller`s endpoint
-        when you create a Shift, keep in mind that you have to assign a Schedule Item to the
-        shift entiy.
         """)
 public class ShiftController {
     

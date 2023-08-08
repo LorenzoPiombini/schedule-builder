@@ -36,7 +36,7 @@ public class EmployeeServiceImpl implements EmployeeService {
       employeeRepo.save(employee);
 
       //this method is to set the timeCardId that the employee would use;
-      employee.setTimeCArdEmployeeId();
+      employee.setTimeCardEmployeeId();
 
       //we save the employee with the timeCardId generated;
       return employeeRepo.save(employee);
