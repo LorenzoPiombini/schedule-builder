@@ -12,6 +12,6 @@ public interface EmployeeService {
     void delateEployee(Long id);
     List<Employee> getAllEmployee();
     List<Shift> getAllShiftsForAEmployee(Long employeeId);
-    Long timeCardidConverter(Integer timeCardEmployeeId);
+    
     
 }

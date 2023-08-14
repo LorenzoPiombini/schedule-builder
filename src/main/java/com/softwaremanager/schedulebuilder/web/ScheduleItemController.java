@@ -125,17 +125,32 @@ public class ScheduleItemController {
     }
  
     @Operation(summary = "retrive the labor cost of a Schedule Item (day)", description = """
-            this endpoint returns the labor cost regarding a specific scheduleItem, that is, the sum of all shift
+            this endpoint returns the labor cost regarding a specific day(scheduleItem) in you schedule, that is, the sum of all shift,
+            this value is just a forecast, due to the fact that you don't know if the employees will follow the schdeule, or the 
+            occurance of a possible call-outs and so on. 
             """)
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Succesfully compute the labor cost", content = @Content(schema = @Schema(implementation = LaborCost.class))),
         @ApiResponse(responseCode="404", description="No data to perform the labor cost computation", content = @Content(schema = @Schema(implementation = NoDataForLaborCostException.class)))
     })
-    @GetMapping(value="/{scheduleItemId}/laborcost")
+    @GetMapping(value="/{scheduleItemId}/laborcost", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Double> getLaborCost(@PathVariable Long scheduleItemId){
         Double result = laborCostService.laborCost(scheduleItemId);
+        
+        scheduleItemService.getScheduleItems();
         return new ResponseEntity<Double>(result, HttpStatus.OK);
     }
+
+    @Operation(summary="Get the labor cost for the all week", description = """
+            this end point return the labor cost of the all week. this result is just the 
+            forecasted labor cost if the employee will follow the schedule that was made.
+            """)
+    @GetMapping(value = "/weekLaborcost", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Double> getWeekLaborCost(){
+        return new ResponseEntity<Double>(LaborCost.computeWeekLaborCost(scheduleItemService.getScheduleItems()), HttpStatus.OK);
+    }
+
+
 
     
     

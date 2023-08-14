@@ -6,7 +6,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.softwaremanager.schedulebuilder.Constant.Constant;
+
 import com.softwaremanager.schedulebuilder.Entity.Employee;
 import com.softwaremanager.schedulebuilder.Entity.Shift;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateEmployeeException;
@@ -108,13 +108,7 @@ public class EmployeeServiceImpl implements EmployeeService {
       }
    }
 
-   @Override
-   public Long timeCardidConverter(Integer timeCardEmployeeId) {
-     Long id = Integer.toUnsignedLong(timeCardEmployeeId - Constant.BASE_TIME_CARD_ID);
-     return id;
-   }
-
-   
+  
 
    
 

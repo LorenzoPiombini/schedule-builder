@@ -31,7 +31,7 @@ public class ScheduleBuilderApplication implements CommandLineRunner{
 		SpringApplication.run(ScheduleBuilderApplication.class, args);
 	}
 
-	// this code populates the in memory (volatile) database H2 with data 
+	// this code populates the inMemory (volatile) database H2 with data 
 	// this is to help the developing project only.
 	
 	@Override
@@ -74,11 +74,11 @@ public class ScheduleBuilderApplication implements CommandLineRunner{
 
 		for (int i = 0; i < employees.length; i++) {
 			// we save twice each employee entity
-			//to compute the timeCardEmployeeId whic is compute
-			// base on the entity id, the later is generated only the first time
+			// to compute the timeCardEmployeeId which is based on
+			// the entity id, the later is generated only the first time
 			// you saved the entity to the database
 			employeeRepository.save(employees[i]);
-			employees[i].setTimeCardEmployeeId();
+			employees[i].setTimeCardEmployeeId(); // computing the timeCard
 			employeeRepository.save(employees[i]);
 		}
 

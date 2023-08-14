@@ -34,4 +34,17 @@ public class LaborCost {
 
         return result;
     }
+
+    public static Double computeWeekLaborCost(List<ScheduleItem> scheduleItems){
+        Double result = 0.0;
+
+        for (ScheduleItem scheduleItem: scheduleItems) {
+            result += getLaborCost(scheduleItem);
+        }
+       
+        return result;
+        
+    }
+
+    
 }

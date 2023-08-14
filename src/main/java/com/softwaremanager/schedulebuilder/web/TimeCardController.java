@@ -1,5 +1,7 @@
 package com.softwaremanager.schedulebuilder.web;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,10 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.softwaremanager.schedulebuilder.Entity.Employee;
+
 import com.softwaremanager.schedulebuilder.Entity.TimeCard;
-import com.softwaremanager.schedulebuilder.Exception.EmployeeAlreadyClockedInException;
-import com.softwaremanager.schedulebuilder.service.EmployeeServiceImpl;
 import com.softwaremanager.schedulebuilder.service.TimeCardServiceImp;
 
 import lombok.AllArgsConstructor;
@@ -23,26 +23,22 @@ import lombok.AllArgsConstructor;
 public class TimeCardController {
 
     TimeCardServiceImp timeCardService;
-    EmployeeServiceImpl employeeService;
+   
 
 
     @PostMapping(value = "/clockin")
     public ResponseEntity<TimeCard> handletClockIn(@RequestParam Integer timeCardEmployeeId){
-        //find the employee from timeCardEmployeeId
-        Employee employee = employeeService.getEmployee(employeeService.timeCardidConverter(timeCardEmployeeId));
-        if(!employee.getTimeCards().isEmpty()) throw new EmployeeAlreadyClockedInException(employee.getId());
-        return new ResponseEntity<TimeCard>(timeCardService.clockIn(employee),HttpStatus.OK);
+        return new ResponseEntity<TimeCard>(timeCardService.clockIn(timeCardEmployeeId),HttpStatus.OK);
     }
 
     @PostMapping(value = "/clockout")
     public ResponseEntity<TimeCard> handletClockOut(@RequestParam Integer timeCardEmployeeId){
-        Employee employee = employeeService.getEmployee(employeeService.timeCardidConverter(timeCardEmployeeId));
-       return new ResponseEntity<TimeCard>(timeCardService.clockOut(employee.getTimeCards().get(0).getId()),HttpStatus.OK);
+        return new ResponseEntity<TimeCard>(timeCardService.clockOut(timeCardEmployeeId),HttpStatus.OK);
     }
 
     @GetMapping(value ="/all")
-    public ResponseEntity<TimeCard> getTimeCards(){
-        return new ResponseEntity<TimeCard>(HttpStatus.OK);
+    public ResponseEntity<List<TimeCard>> getTimeCards(){
+        return new ResponseEntity<List<TimeCard>>(timeCardService.findAll(),HttpStatus.OK);
     }
   
     

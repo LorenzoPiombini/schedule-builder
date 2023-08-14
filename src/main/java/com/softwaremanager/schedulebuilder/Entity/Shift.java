@@ -60,6 +60,7 @@ public class Shift {
         this.endTime = end;
     }
 
+    @JsonIgnore
     @Transient
     private Double hourShift(){
         
