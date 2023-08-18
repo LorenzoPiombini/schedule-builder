@@ -1,18 +1,22 @@
 package com.softwaremanager.schedulebuilder.service;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.softwaremanager.schedulebuilder.ComputingClasses.LaborCost;
 import com.softwaremanager.schedulebuilder.Entity.Employee;
-import com.softwaremanager.schedulebuilder.Entity.ScheduleItem;
 import com.softwaremanager.schedulebuilder.Entity.Shift;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateShiftExeption;
+import com.softwaremanager.schedulebuilder.Exception.EmployeeAlreadyHaveThisShiftException;
 import com.softwaremanager.schedulebuilder.Exception.ShiftNotAssociatedToEmployee;
 import com.softwaremanager.schedulebuilder.Exception.ShiftNotFoundException;
 import com.softwaremanager.schedulebuilder.repository.EmployeeRepository;
-import com.softwaremanager.schedulebuilder.repository.ScheduleItemRepository;
 import com.softwaremanager.schedulebuilder.repository.ShiftRepository;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +30,7 @@ public class ShiftServiceImpl implements ShiftService {
     
     ShiftRepository shiftRepo;
     EmployeeRepository employeeRepo;
-    ScheduleItemRepository scheduleItemRepo;
+   
 
   
    static Shift unwrapShift(Optional<Shift> entity, Long shiftId){
@@ -45,11 +49,10 @@ public class ShiftServiceImpl implements ShiftService {
 
    @Override
    public Shift saveShift(Shift shift) {
-      checkForDoubleItem(shift);
-
-      
-      
-   
+     // checkForDoubleItem(shift); 
+     // i commented this out because with the new code refactor
+     // there is no need to have a check for a duplicate entities, since the new system is counting 
+     // on duplicate entities 
       return shiftRepo.save(shift);
    }
 
@@ -57,10 +60,12 @@ public class ShiftServiceImpl implements ShiftService {
 
 
     @Override
-   public Shift updateShift(LocalTime startTime, LocalTime endTime, Long shiftId) {
+   public Shift updateShift(LocalTime startTime, LocalTime endTime, LocalDate date, Long shiftId) {
       Shift shift = getShift(shiftId);
       shift.setStartTime(startTime);
       shift.setEndTime(endTime);
+      shift.setDate(date);
+
       return shiftRepo.save(shift);
    }
 
@@ -93,9 +98,12 @@ public class ShiftServiceImpl implements ShiftService {
    @Override
    public Shift addShiftToEmployee(Long shiftId, Long employeeId) {
        Shift shiftToAdd = getShift(shiftId);
+
+       if(isShiftAlreadyAssignedToThisEmployee(employeeId, shiftToAdd)) throw new EmployeeAlreadyHaveThisShiftException(employeeId);
+       
        Employee employee = EmployeeServiceImpl.optionalUnwrapper(employeeRepo.findById(employeeId),employeeId);
        
-      
+       
        employee.getShifts().add(shiftToAdd);
        shiftToAdd.getEmployees().add(employee);
        
@@ -104,18 +112,17 @@ public class ShiftServiceImpl implements ShiftService {
 
    }
    
-   @Override
-   public Shift addShiftToScheduleItem(Long shiftId, Long scheduleItemId) {
-      
-      Shift shiftToAdd = getShift(shiftId);
-      ScheduleItem scheduleItem = ScheduleItemServiceImp.unwrapScheduleItem(scheduleItemRepo.findById(scheduleItemId), scheduleItemId);
-
-      scheduleItem.getShiftInTheScheduleItem().add(shiftToAdd);
-      shiftToAdd.getScheduleItems().add(scheduleItem);
-
-      return shiftToAdd;
-
+    @Override
+   public Double getLaborCost(List<Shift> shifts, LocalDate date) {
+      return LaborCost.computeLaborOfShift(shifts, date);
    }
+
+   @Override
+   public Double getWeekLaborCost() {
+      
+      return 0.0;
+   }
+
 
 
    public void checkForDoubleItem(Shift shift){
@@ -150,12 +157,51 @@ public class ShiftServiceImpl implements ShiftService {
 
     }
     
-    updateShift(shiftToDeleteFromEmployee.getStartTime(), shiftToDeleteFromEmployee.getEndTime(), shiftId);
+    updateShift(shiftToDeleteFromEmployee.getStartTime(), shiftToDeleteFromEmployee.getEndTime(), shiftToDeleteFromEmployee.getDate(), shiftId);
     employeeRepo.save(employee);
   
    }
 
 
+   
+   /**
+    *  this method look in wich week we are in, then 
+    *  return a {@code Map<LocalDate, Shift>}, which will be used to perform
+    *  weekly labor cost computation
+    * @return
+    */
+   private Map<LocalDate, Shift> findeShiftThisWeek(){
+      Map<LocalDate, Shift> thisWeek = new HashMap<>();
+      Map<LocalDate, DayOfWeek> week = new HashMap<>();
+
+      LocalDate today = LocalDate.now();
+      LocalDate startWeek = today.minusDays(today.getDayOfWeek().getValue() - DayOfWeek.MONDAY.getValue());
+      
+
+      for(int i = 0; i < 7; i++){
+         week.put(startWeek, startWeek.getDayOfWeek());
+         startWeek = startWeek.plusDays(1);
+      }
+      
+      for (Shift shift : getAllShifts()) {
+         LocalDate date = shift.getDate();
+
+         if(thisWeek.containsKey(date)){
+            thisWeek.put(shift.getDate(), shift);
+         }
+
+      }
+      
+      return thisWeek;
+   }
+
+
+   private boolean isShiftAlreadyAssignedToThisEmployee(Long employeeId, Shift shift){
+      for (Employee e : shift.getEmployees()) {
+         if(e.getId().equals(employeeId)) return true;
+      }
+      return false;
+   }
  
 
 

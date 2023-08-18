@@ -1,4 +1,5 @@
 package com.softwaremanager.schedulebuilder.web;
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.softwaremanager.schedulebuilder.Entity.Employee;
@@ -72,7 +74,7 @@ public class ShiftController {
             """)
      @PutMapping(value = "/{shiftId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Shift> updateShift(@RequestBody Shift shift, @PathVariable Long shiftId){
-        return new ResponseEntity<Shift>( shiftService.updateShift(shift.getStartTime(), shift.getEndTime(), shiftId),HttpStatus.OK);
+        return new ResponseEntity<Shift>( shiftService.updateShift(shift.getStartTime(), shift.getEndTime(), shift.getDate(), shiftId),HttpStatus.OK);
     }
 
     @Operation(summary = "Assign a shift to an Employee", description = """
@@ -120,5 +122,15 @@ public class ShiftController {
         return new ResponseEntity<>(shiftService.getEmployeeShift(shiftId), HttpStatus.OK);
     }
 
+
+    @GetMapping(value = "/labor")
+    public ResponseEntity<Double> getLaborCostDay(@RequestParam LocalDate date){
+        return new ResponseEntity<Double>(shiftService.getLaborCost(shiftService.getAllShifts(),date),HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/labor/week")
+    public ResponseEntity<Double> getLaborCostWeek(){
+        return new ResponseEntity<Double>(shiftService.getWeekLaborCost(),HttpStatus.OK);
+    }
 
 }

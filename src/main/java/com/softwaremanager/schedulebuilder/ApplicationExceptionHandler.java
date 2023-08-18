@@ -16,11 +16,12 @@ import org.springframework.web.context.request.WebRequest;
 
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.softwaremanager.schedulebuilder.Exception.ScheduleItemNotFoundException;
+
 import com.softwaremanager.schedulebuilder.Exception.ShiftNotAssociatedToEmployee;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateEmployeeException;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateShiftExeption;
 import com.softwaremanager.schedulebuilder.Exception.EmployeeAlreadyClockedInException;
+import com.softwaremanager.schedulebuilder.Exception.EmployeeAlreadyHaveThisShiftException;
 import com.softwaremanager.schedulebuilder.Exception.EmployeeClockedOutAlreadyException;
 import com.softwaremanager.schedulebuilder.Exception.EmployeeNotClockedInException;
 import com.softwaremanager.schedulebuilder.Exception.EmployeeNotFoundException;
@@ -42,7 +43,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
         return new ResponseEntity<>(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
     }
     
-    @ExceptionHandler({EmployeeNotFoundException.class, ShiftNotFoundException.class, ScheduleItemNotFoundException.class, ShiftNotAssociatedToEmployee.class, NoDataForLaborCostException.class, TimeCardNotFoundException.class})
+    @ExceptionHandler({EmployeeNotFoundException.class, ShiftNotFoundException.class, ShiftNotAssociatedToEmployee.class, NoDataForLaborCostException.class, TimeCardNotFoundException.class})
     public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex){
            return new ResponseEntity<>(new ErrorResponse(Arrays.asList(ex.getMessage())), HttpStatus.NOT_FOUND);
     }
@@ -55,6 +56,11 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
 
     @ExceptionHandler({EmployeeAlreadyClockedInException.class, EmployeeNotClockedInException.class, EmployeeClockedOutAlreadyException.class})
     public ResponseEntity<ErrorResponse> handleEmployeeAlreadyClockIn(RuntimeException ex){
+        return new ResponseEntity<ErrorResponse>(new ErrorResponse(Arrays.asList(ex.getMessage())), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler({EmployeeAlreadyHaveThisShiftException.class})
+    public ResponseEntity<ErrorResponse> handleSameEmployeeInTheSameShift(RuntimeException ex){
         return new ResponseEntity<ErrorResponse>(new ErrorResponse(Arrays.asList(ex.getMessage())), HttpStatus.BAD_REQUEST);
     }
         

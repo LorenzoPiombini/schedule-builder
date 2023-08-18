@@ -1,10 +1,10 @@
 package com.softwaremanager.schedulebuilder.Entity;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -12,8 +12,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -41,26 +39,22 @@ public class Shift {
 
     @Column(name = "end_time")
     private LocalTime endTime;
+
+    @Column(name = "date")
+    private LocalDate date;
     
     @ManyToMany(mappedBy = "shifts", cascade = CascadeType.ALL)
     private List<Employee> employees;
 
-    @JsonIgnore
-    @ManyToMany
-    @JoinTable(
-        name = "shifts_schedule_items",
-        joinColumns = @JoinColumn(name = "shift_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name="scheduleItem_id", referencedColumnName = "id")
+    
 
-    )
-    private List<ScheduleItem> scheduleItems;
-
-    public Shift(LocalTime start, LocalTime end){
+    public Shift(LocalTime start, LocalTime end, LocalDate date){
         this.startTime = start;
         this.endTime = end;
+        this.date = date;
     }
 
-    @JsonIgnore
+    
     @Transient
     private Double hourShift(){
         

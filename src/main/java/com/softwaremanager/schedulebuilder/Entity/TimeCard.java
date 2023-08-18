@@ -36,7 +36,7 @@ public class TimeCard {
     // @JoinColumn(name = "shift_id", nullable = false)
     // private Shift shift;
 
-
+    
     @Column(name = "clock_in")
     private LocalDateTime clockIn;
 
