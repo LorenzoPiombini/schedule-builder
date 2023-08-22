@@ -49,10 +49,6 @@ public class ShiftServiceImpl implements ShiftService {
 
    @Override
    public Shift saveShift(Shift shift) {
-     // checkForDoubleItem(shift); 
-     // i commented this out because with the new code refactor
-     // there is no need to have a check for a duplicate entities, since the new system is counting 
-     // on duplicate entities 
       return shiftRepo.save(shift);
    }
 
@@ -170,7 +166,7 @@ public class ShiftServiceImpl implements ShiftService {
     *  weekly labor cost computation
     * @return
     */
-   private Map<LocalDate, Shift> findeShiftThisWeek(){
+   private Map<LocalDate, Shift> findShiftThisWeek(){
       Map<LocalDate, Shift> thisWeek = new HashMap<>();
       Map<LocalDate, DayOfWeek> week = new HashMap<>();
 
