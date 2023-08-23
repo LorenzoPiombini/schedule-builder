@@ -33,9 +33,10 @@ public TimeCard clockIn(Integer timeCardEmployeeId) {
     Employee employee = EmployeeServiceImpl.optionalUnwrapper(employeeRepository.findById(timeCardidConverter(timeCardEmployeeId)), timeCardidConverter(timeCardEmployeeId));
 
     if(!isNewTimeCard(employee.getTimeCards())) throw new EmployeeAlreadyClockedInException(employee.getId());
-    
+     
+    TimeCard timecard = timeCardRepo.clockIn(employee);
 
-    return timeCardRepo.save(timeCardRepo.clockIn(employee));
+    return timeCardRepo.save(timecard);
 }
 
 @Override
@@ -46,8 +47,7 @@ public TimeCard clockOut(Integer timeCardEmployeeId) {
     
      if(!isEmployeeClockedIn(employee.getTimeCards())) throw new EmployeeNotClockedInException(employee.getId());
    
-     Long timeCardId = 0L;
-     timeCardId = employee.getTimeCards().get(0).getId();
+     Long timeCardId = employee.getTimeCards().get(0).getId();
      
     TimeCard timecard = unwrapOptional(timeCardRepo.findById(timeCardId), timeCardId);
     
@@ -86,8 +86,8 @@ public List<TimeCard> findAllByEmployeeId(Employee employee) {
  * @return boolean
  */
 
-private boolean isNewTimeCard(List<TimeCard> timeCards){
-     if(timeCards.isEmpty()|| timeCards == null) return true;
+public boolean isNewTimeCard(List<TimeCard> timeCards){
+     if(timeCards == null || timeCards.isEmpty() ) return true;
      
      for (TimeCard timeCard : timeCards) {
         if(timeCard.getClockIn().getDayOfMonth() == LocalDateTime.now().getDayOfMonth()) return false;
@@ -98,7 +98,7 @@ private boolean isNewTimeCard(List<TimeCard> timeCards){
 
 
    private boolean isEmployeeClockedIn(List<TimeCard> timeCards){
-      if(timeCards.isEmpty() || timeCards == null) return false;
+      if(timeCards == null || timeCards.isEmpty() ) return false;
 
 
       for (TimeCard timeCard : timeCards) {

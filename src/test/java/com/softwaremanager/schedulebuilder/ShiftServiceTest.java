@@ -99,7 +99,7 @@ public class ShiftServiceTest {
         when(employeeRepo.findById(1L)).thenReturn(Optional.of(employeeExample));
         
        
-        Shift result = shiftService.addShiftToEmployee(1L, 1L);
+         shiftService.addShiftToEmployee(1L, 1L);
 
         assertTrue(employeeExample.getShifts().contains(shift));
         assertTrue(shift.getEmployees().contains(employeeExample));
