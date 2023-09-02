@@ -12,6 +12,7 @@ import com.softwaremanager.schedulebuilder.Entity.Shift;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateEmployeeException;
 import com.softwaremanager.schedulebuilder.Exception.EmployeeNotFoundException;
 import com.softwaremanager.schedulebuilder.repository.EmployeeRepository;
+import com.softwaremanager.sortingClasses.SortEmployee;
 
 import lombok.AllArgsConstructor;
 
@@ -56,7 +57,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
    @Override
    public List<Employee> getAllEmployee() {
-      return (List<Employee>) employeeRepo.findAll();
+      SortEmployee sorter = new SortEmployee();
+      List<Employee> employees = (List<Employee>)  employeeRepo.findAll();
+      sorter.sortByLastName(employees);
+      return employees;
    }
 
    @Override

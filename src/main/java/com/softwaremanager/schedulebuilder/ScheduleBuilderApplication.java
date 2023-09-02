@@ -80,17 +80,13 @@ public class ScheduleBuilderApplication implements CommandLineRunner{
 		}
 
 		
-        //3 days worth of schedule 
+        //a week worth of schedule 
 		Shift[] shifts = new Shift[]{
-			new Shift(LocalTime.of(10, 0, 0), LocalTime.of(17, 0, 0), LocalDate.of(2023, 7, 24)),
 			new Shift(LocalTime.of(10, 0, 0), LocalTime.of(17, 0, 0), LocalDate.of(2023, 7, 24)),
 			new Shift(LocalTime.of(11, 0, 0), LocalTime.of(17, 0, 0),LocalDate.of(2023, 7, 24)),
 			new Shift(LocalTime.of(11, 0, 0), LocalTime.of(20, 30, 0),LocalDate.of(2023, 7, 24)),
 			new Shift(LocalTime.of(16, 0, 0), LocalTime.of(20, 30, 0),LocalDate.of(2023, 7, 24)),
-			new Shift(LocalTime.of(16, 0, 0), LocalTime.of(20, 30, 0),LocalDate.of(2023, 7, 24)),
-			new Shift(LocalTime.of(10, 0, 0), LocalTime.of(20, 30, 0), LocalDate.of(2023, 7, 24)),
 
-			new Shift(LocalTime.of(10, 0, 0), LocalTime.of(20, 30, 0), LocalDate.of(2023, 7, 25)),
 			new Shift(LocalTime.of(10, 0, 0), LocalTime.of(20, 30, 0), LocalDate.of(2023, 7, 25)),
 			new Shift(LocalTime.of(10, 0, 0), LocalTime.of(17, 0, 0), LocalDate.of(2023, 7, 25)),
 			new Shift(LocalTime.of(11, 0, 0), LocalTime.of(17, 0, 0),LocalDate.of(2023, 7, 25)),
@@ -100,9 +96,23 @@ public class ScheduleBuilderApplication implements CommandLineRunner{
 			new Shift(LocalTime.of(10, 0, 0), LocalTime.of(20, 30, 0), LocalDate.of(2023, 7, 26)),
 			new Shift(LocalTime.of(11, 0, 0), LocalTime.of(20, 30, 0),LocalDate.of(2023, 7, 26)),
 			
+			new Shift(LocalTime.of(10, 0, 0), LocalTime.of(17, 0, 0), LocalDate.of(2023, 7, 27)),
+            new Shift(LocalTime.of(10, 0, 0), LocalTime.of(20, 30, 0), LocalDate.of(2023, 7, 27)),
+			new Shift(LocalTime.of(11, 0, 0), LocalTime.of(20, 30, 0),LocalDate.of(2023, 7, 27)),
+			 new Shift(LocalTime.of(16, 0, 0), LocalTime.of(20, 30, 0),LocalDate.of(2023, 7, 27)),
 
+			 new Shift(LocalTime.of(10, 0, 0), LocalTime.of(20, 30, 0), LocalDate.of(2023, 7, 28)),
+			 new Shift(LocalTime.of(11, 0, 0), LocalTime.of(20, 30, 0), LocalDate.of(2023, 7, 28)),
+			 new Shift(LocalTime.of(11, 0, 0), LocalTime.of(17, 0, 0),LocalDate.of(2023, 7, 28)),
+		
+			 new Shift(LocalTime.of(10, 0, 0), LocalTime.of(20, 30, 0), LocalDate.of(2023, 7, 29)),
+			 new Shift(LocalTime.of(11, 0, 0), LocalTime.of(17, 0, 0),LocalDate.of(2023, 7, 29)),
+			 new Shift(LocalTime.of(10, 0, 0), LocalTime.of(17, 0, 0),LocalDate.of(2023, 7, 29)),
+			 new Shift(LocalTime.of(9, 30, 0), LocalTime.of(20, 30, 0),LocalDate.of(2023, 7, 29)),
 			
-		};
+			 new Shift(LocalTime.of(10, 0, 0), LocalTime.of(18, 30, 0), LocalDate.of(2023, 7, 30)),
+			 new Shift(LocalTime.of(11, 0, 0), LocalTime.of(17, 0, 0),LocalDate.of(2023, 7, 29)),
+			};
 
 		for (int index = 0; index < shifts.length; index++) {
 			shiftRepository.save(shifts[index]);
