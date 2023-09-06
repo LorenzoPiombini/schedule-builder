@@ -123,11 +123,19 @@ public class ShiftController {
     }
 
 
+    @Operation(summary = "labor cost of single day", description = """
+            this endpoint compute the labor cost of all the shift in the same date.
+            """)
     @GetMapping(value = "/labor")
     public ResponseEntity<Double> getLaborCostDay(@RequestParam LocalDate date){
         return new ResponseEntity<Double>(shiftService.getLaborCost(shiftService.getAllShifts(),date),HttpStatus.OK);
     }
 
+
+    @Operation(summary =" current week labor cost", description = """
+            Curretn week labor cost, this data are just a forecast, since they do not take in 
+            consideration the timeCard data
+            """)
     @GetMapping(value = "/labor/week")
     public ResponseEntity<Double> getLaborCostWeek(){
         return new ResponseEntity<Double>(shiftService.getWeekLaborCost(),HttpStatus.OK);

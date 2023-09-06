@@ -115,8 +115,7 @@ public class ShiftServiceImpl implements ShiftService {
 
    @Override
    public Double getWeekLaborCost() {
-      
-      return 0.0;
+      return LaborCost.laborCostWeek();
    }
 
 
