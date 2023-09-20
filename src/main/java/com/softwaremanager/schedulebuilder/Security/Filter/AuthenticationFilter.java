@@ -1,5 +1,7 @@
 package com.softwaremanager.schedulebuilder.Security.Filter;
 
-public class AuthenticationFilter {
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 }

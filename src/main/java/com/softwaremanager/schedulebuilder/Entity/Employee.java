@@ -1,10 +1,6 @@
 package com.softwaremanager.schedulebuilder.Entity;
 
-
-
 import java.util.List;
-
-
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.softwaremanager.schedulebuilder.Constant.*;
@@ -21,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -42,7 +39,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id; 
+    private Long id;
 
     @NotBlank(message = "First Name cannot be blank!")
     @Column(name = "first_name")
@@ -51,45 +48,37 @@ public class Employee {
     @NotBlank(message = "Last Name cannot be blank!")
     @Column(name = "last_name")
     private String lastName;
-    
-    @Digits( integer = 2 ,fraction = 0, message ="Please enter a valid age number")
+
+    @Digits(integer = 2, fraction = 0, message = "Please enter a valid age number")
     @Column(name = "age")
     private int age;
-    
-    @DecimalMin(value = "7.0", inclusive = true, message="Please enter at least the minimum wage")
-    @DecimalMax(value = "100.0", inclusive= false, message ="Please enter an hourly rate smaler than $ 100.0")
+
+    @DecimalMin(value = "7.0", inclusive = true, message = "Please enter at least the minimum wage")
+    @DecimalMax(value = "100.0", inclusive = false, message = "Please enter an hourly rate smaler than $ 100.0")
     @Column(name = "hourly_rate")
     private double hourlyRate;
-    
-    @NotBlank(message="Please enter a valid JobTitle e.i.: \"Manager\" ")
+
+    @NotBlank(message = "Please enter a valid JobTitle e.i.: \"Manager\" ")
     @Column(name = "job_title")
     private String jobTitle;
-    
 
     private int timeCardEmployeeId;
 
-    
     @Enumerated(EnumType.STRING)
     @NotNull(message = "you must specify a role (\"ADMIN\" or \"USER\")")
-    @Column(name= "role")
+    @Column(name = "role")
     private Role role;
 
     @JsonIgnore
     @ManyToMany
-    @JoinTable(
-        name = "employee_shift",
-        joinColumns = @JoinColumn(name ="employee_id", referencedColumnName="id"),
-        inverseJoinColumns = @JoinColumn(name="shift_id", referencedColumnName = "id")
-    )
+    @JoinTable(name = "employee_shift", joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "shift_id", referencedColumnName = "id"))
     private List<Shift> shifts;
 
     @JsonIgnore
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<TimeCard> timeCards;
 
-
-   
-    public Employee(String firstName, String lastName, int i, Double hourlyRate, String jobTitle, Role role){
+    public Employee(String firstName, String lastName, int i, Double hourlyRate, String jobTitle, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = i;
@@ -98,19 +87,14 @@ public class Employee {
         this.role = role;
     }
 
-    
+    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
+    private Users user;
 
-    //this code set up a unique timeCard code for each employee
+    // this code set up a unique timeCard code for each employee
 
-    public void setTimeCardEmployeeId(){
-      this.timeCardEmployeeId = Constant.BASE_TIME_CARD_ID + this.id.intValue();  
-    } 
-    //-------------------------------------------------------
+    public void setTimeCardEmployeeId() {
+        this.timeCardEmployeeId = Constant.BASE_TIME_CARD_ID + this.id.intValue();
+    }
+    // -------------------------------------------------------
 
-
-    
-
-
-
-   
 }
