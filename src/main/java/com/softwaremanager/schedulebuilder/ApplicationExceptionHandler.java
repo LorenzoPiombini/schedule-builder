@@ -16,7 +16,6 @@ import org.springframework.web.context.request.WebRequest;
 
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-
 import com.softwaremanager.schedulebuilder.Exception.ShiftNotAssociatedToEmployee;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateEmployeeException;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateShiftExeption;
@@ -30,6 +29,7 @@ import com.softwaremanager.schedulebuilder.Exception.ErrorResponse;
 
 import com.softwaremanager.schedulebuilder.Exception.ShiftNotFoundException;
 import com.softwaremanager.schedulebuilder.Exception.TimeCardNotFoundException;
+import com.softwaremanager.schedulebuilder.Exception.UserNotFoundException;
 
 @ControllerAdvice
 public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler {
@@ -38,34 +38,34 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     @Nullable
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatusCode status, WebRequest request) {
-            List<String> errors = new ArrayList<>();
-            ex.getBindingResult().getAllErrors().forEach((error) -> errors.add(error.getDefaultMessage()));
+        List<String> errors = new ArrayList<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> errors.add(error.getDefaultMessage()));
         return new ResponseEntity<>(new ErrorResponse(errors), HttpStatus.BAD_REQUEST);
     }
-    
-    @ExceptionHandler({EmployeeNotFoundException.class, ShiftNotFoundException.class, ShiftNotAssociatedToEmployee.class, NoDataForLaborCostException.class, TimeCardNotFoundException.class})
-    public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex){
-           return new ResponseEntity<>(new ErrorResponse(Arrays.asList(ex.getMessage())), HttpStatus.NOT_FOUND);
+
+    @ExceptionHandler({ EmployeeNotFoundException.class, ShiftNotFoundException.class,
+            ShiftNotAssociatedToEmployee.class, NoDataForLaborCostException.class, TimeCardNotFoundException.class,
+            UserNotFoundException.class })
+    public ResponseEntity<Object> handleResourceNotFoundException(RuntimeException ex) {
+        return new ResponseEntity<>(new ErrorResponse(Arrays.asList(ex.getMessage())), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({DuplicateShiftExeption.class, DuplicateEmployeeException.class})
-    public ResponseEntity<Object> handleDuplicateShidts(RuntimeException ex){
+    @ExceptionHandler({ DuplicateShiftExeption.class, DuplicateEmployeeException.class })
+    public ResponseEntity<Object> handleDuplicateShidts(RuntimeException ex) {
         return new ResponseEntity<Object>(new ErrorResponse(Arrays.asList(ex.getMessage())), HttpStatus.BAD_REQUEST);
     }
 
-
-    @ExceptionHandler({EmployeeAlreadyClockedInException.class, EmployeeNotClockedInException.class, EmployeeClockedOutAlreadyException.class})
-    public ResponseEntity<ErrorResponse> handleEmployeeAlreadyClockIn(RuntimeException ex){
-        return new ResponseEntity<ErrorResponse>(new ErrorResponse(Arrays.asList(ex.getMessage())), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler({ EmployeeAlreadyClockedInException.class, EmployeeNotClockedInException.class,
+            EmployeeClockedOutAlreadyException.class })
+    public ResponseEntity<ErrorResponse> handleEmployeeAlreadyClockIn(RuntimeException ex) {
+        return new ResponseEntity<ErrorResponse>(new ErrorResponse(Arrays.asList(ex.getMessage())),
+                HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler({EmployeeAlreadyHaveThisShiftException.class})
-    public ResponseEntity<ErrorResponse> handleSameEmployeeInTheSameShift(RuntimeException ex){
-        return new ResponseEntity<ErrorResponse>(new ErrorResponse(Arrays.asList(ex.getMessage())), HttpStatus.BAD_REQUEST);
+    @ExceptionHandler({ EmployeeAlreadyHaveThisShiftException.class })
+    public ResponseEntity<ErrorResponse> handleSameEmployeeInTheSameShift(RuntimeException ex) {
+        return new ResponseEntity<ErrorResponse>(new ErrorResponse(Arrays.asList(ex.getMessage())),
+                HttpStatus.BAD_REQUEST);
     }
-        
-
-
-   
 
 }

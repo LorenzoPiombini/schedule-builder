@@ -1,5 +1,7 @@
 package com.softwaremanager.schedulebuilder.service;
 
-public interface UserService {
+import com.softwaremanager.schedulebuilder.Entity.Users;
 
+public interface UserService {
+    Users getUser(String username);
 }

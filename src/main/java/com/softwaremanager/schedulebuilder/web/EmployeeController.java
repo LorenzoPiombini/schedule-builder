@@ -2,8 +2,6 @@ package com.softwaremanager.schedulebuilder.web;
 
 import java.util.List;
 
-
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,53 +23,51 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("v1/employee")
-@Tag(name= "Employee Controller", 
- description="""
+@Tag(name = "Employee Controller", description = """
         Controller dedicated to manage Employees entity,
-        all CRUD operations are managed by this Controller's Endpoints.    
-         """
- )
+        all CRUD operations are managed by this Controller's Endpoints.
+         """)
 public class EmployeeController {
-   
-    
+
     private EmployeeServiceImpl service;
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<Employee> showEmployee(@PathVariable Long id){
+    public ResponseEntity<Employee> showEmployee(@PathVariable Long id) {
         return new ResponseEntity<Employee>(service.getEmployee(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee){
-         return new ResponseEntity<Employee>(service.saveEmployee(employee),HttpStatus.CREATED);
+    public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee) {
+        return new ResponseEntity<Employee>(service.saveEmployee(employee), HttpStatus.CREATED);
     }
-
-    
 
     @PutMapping("/{employeeId}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable Long employeeId, @Valid @RequestBody Employee employee){
-        return new ResponseEntity<Employee>(service.updateEmployee(employeeId, employee),HttpStatus.OK);
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Long employeeId,
+            @Valid @RequestBody Employee employee) {
+        return new ResponseEntity<Employee>(service.updateEmployee(employeeId, employee), HttpStatus.OK);
     }
 
-   
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable Long id){
+    public ResponseEntity<HttpStatus> deleteEmployee(@PathVariable Long id) {
         service.delateEployee(id);
         return new ResponseEntity<HttpStatus>(HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<Employee>> showAllEmployee(){
+    public ResponseEntity<List<Employee>> showAllEmployee() {
         List<Employee> employees = service.getAllEmployee();
         return new ResponseEntity<List<Employee>>(employees, HttpStatus.OK);
     }
 
     @GetMapping("/{employeeId}/shifts")
-    public ResponseEntity<List<Shift>> getShifts(@PathVariable Long employeeId){
-       return new ResponseEntity<>(service.getAllShiftsForAEmployee(employeeId),HttpStatus.OK);
+    public ResponseEntity<List<Shift>> getShifts(@PathVariable Long employeeId) {
+        return new ResponseEntity<>(service.getAllShiftsForAEmployee(employeeId), HttpStatus.OK);
     }
 
-   
+    @PostMapping("/{employeeId}/users/create")
+    public ResponseEntity<HttpStatus> createUser(@PathVariable Long employeeId) {
+        service.generateUser(employeeId);
+        return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
+    }
 
 }

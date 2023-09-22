@@ -6,7 +6,6 @@ import java.time.LocalTime;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.softwaremanager.schedulebuilder.Constant.Role;
 import com.softwaremanager.schedulebuilder.Entity.Employee;
@@ -23,7 +22,6 @@ public class ScheduleBuilderApplication implements CommandLineRunner {
 
 	private EmployeeRepository employeeRepo;
 	private ShiftRepository shiftRepo;
-	private BCryptPasswordEncoder encoder;
 
 	public static void main(String[] args) {
 		SpringApplication.run(ScheduleBuilderApplication.class, args);

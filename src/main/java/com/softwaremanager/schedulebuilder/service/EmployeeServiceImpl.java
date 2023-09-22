@@ -6,11 +6,14 @@ import java.util.Optional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.softwaremanager.schedulebuilder.Constant.Constant;
 import com.softwaremanager.schedulebuilder.Entity.Employee;
 import com.softwaremanager.schedulebuilder.Entity.Shift;
+import com.softwaremanager.schedulebuilder.Entity.Users;
 import com.softwaremanager.schedulebuilder.Exception.DuplicateEmployeeException;
 import com.softwaremanager.schedulebuilder.Exception.EmployeeNotFoundException;
 import com.softwaremanager.schedulebuilder.repository.EmployeeRepository;
+import com.softwaremanager.schedulebuilder.repository.UsersRepository;
 import com.softwaremanager.sortingClasses.SortEmployee;
 
 import lombok.AllArgsConstructor;
@@ -20,7 +23,8 @@ import lombok.AllArgsConstructor;
 public class EmployeeServiceImpl implements EmployeeService {
 
    private EmployeeRepository employeeRepo;
-   private BCryptPasswordEncoder encoder;
+   private UsersRepository userRepo;
+   private BCryptPasswordEncoder econder;
 
    @Override
    public Employee getEmployee(Long id) {
@@ -115,6 +119,17 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new DuplicateEmployeeException(employeeSaved);
          }
       }
+   }
+
+   @Override
+   public void generateUser(Long EmployeeId) {
+      Employee employee = optionalUnwrapper(employeeRepo.findById(EmployeeId), EmployeeId);
+      Users user = new Users();
+      user.setEmployee(employee);
+      user.setUsername(employee.getFirstName() + employee.getLastName());
+      String password = employee.getLastName() + Constant.BASE_TIME_CARD_ID;
+      user.setPassword(econder.encode(password));
+      userRepo.save(user);
    }
 
 }
