@@ -34,4 +34,4 @@ build/
 
 
 ### Constant Class for Security reasons ###
-.src/main/java/com/softwaremanager/schedulebuilder/Costant/Constant.java
+src/main/java/com/softwaremanager/schedulebuilder/Costant/Constant.java
