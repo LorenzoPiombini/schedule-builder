@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### Constant Class for Security reasons ###
+.src/main/java/com/softwaremanager/schedulebuilder/Costant/Constant.java

@@ -1,13 +1,17 @@
 package com.softwaremanager.schedulebuilder.Security.Filter;
 
 import java.io.IOException;
+import java.util.Date;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.softwaremanager.schedulebuilder.Constant.Constant;
 import com.softwaremanager.schedulebuilder.Entity.Users;
 import com.softwaremanager.schedulebuilder.Security.Manager.CustomAuthenticationManager;
 
@@ -41,14 +45,21 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
             Authentication authResult) throws IOException, ServletException {
-        System.out.println("YAYAYAYAY you are authenticated");
+        String token = JWT.create()
+                .withSubject(authResult.getName())
+                .withExpiresAt(new Date(System.currentTimeMillis() + Constant.TOEKN_TIME_EXIRATION))
+                .sign(Algorithm.HMAC512(Constant.SECRET_KEY));
+
+        response.addHeader(Constant.AUTHORIZATION, Constant.BEARER + token);
     }
 
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
             AuthenticationException failed) throws IOException, ServletException {
-        System.out.println("NOPE! you are not authen ticate");
-    
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.getWriter().write(failed.getMessage());
+        response.getWriter().flush();
+
     }
 
 }

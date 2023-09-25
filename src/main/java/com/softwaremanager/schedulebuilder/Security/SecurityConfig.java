@@ -4,12 +4,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.softwaremanager.schedulebuilder.Security.Filter.AuthenticationFilter;
 import com.softwaremanager.schedulebuilder.Security.Filter.ExceptionHandlerFilter;
+import com.softwaremanager.schedulebuilder.Security.Filter.JWTAuthorizationFilter;
 import com.softwaremanager.schedulebuilder.Security.Manager.CustomAuthenticationManager;
 
 import lombok.AllArgsConstructor;
@@ -38,6 +38,7 @@ public class SecurityConfig {
                                         .anyRequest().authenticated())
                                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
                                 .addFilter(filter)
+                                .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
                                 .sessionManagement(management -> management
                                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
                     } catch (Exception e) {
