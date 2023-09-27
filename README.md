@@ -1,8 +1,9 @@
 # schedule-builder
 
-this API won`t work without the Constant.java file, for securty reasons I decide no to track the COnstant file with git.
+this API won`t work without the Constant.java file, for securty reasons I decide no to track the Constant file with git.
 to make it function you will have to create your own Constant Class and create your own Secret key for JWT authentications porpuses.
-the Constant class should look somethinf like:
+the Constant class should look something like:
+//* CODE * //
 
 public class Constant {
     public static final int BASE_TIME_CARD_ID = 100;
