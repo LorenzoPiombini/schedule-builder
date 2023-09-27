@@ -19,6 +19,7 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         try {
+
             filterChain.doFilter(request, response);
         } catch (JWTVerificationException e) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);

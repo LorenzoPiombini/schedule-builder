@@ -1,5 +1,7 @@
 package com.softwaremanager.schedulebuilder.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -38,6 +40,7 @@ public class Users {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "employee_id", nullable = true)
     private Employee employee;

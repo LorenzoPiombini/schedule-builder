@@ -25,7 +25,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
         String header = request.getHeader("Authorization");
 
-        if (header == null || header.startsWith(Constant.BEARER)) {
+        if (header == null || !header.startsWith(Constant.BEARER)) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -39,6 +39,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, Arrays.asList());
         SecurityContextHolder.getContext().setAuthentication(auth);
+
         filterChain.doFilter(request, response);
 
     }

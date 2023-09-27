@@ -32,6 +32,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         try {
             Users user = new ObjectMapper().readValue(request.getInputStream(), Users.class);
+
             Authentication authentication = new UsernamePasswordAuthenticationToken(user.getUsername(),
                     user.getPassword());
             return authManager.authenticate(authentication);
