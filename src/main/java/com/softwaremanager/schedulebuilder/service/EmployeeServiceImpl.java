@@ -107,7 +107,7 @@ public class EmployeeServiceImpl implements EmployeeService {
       oldEmployee.setFirstName(employee.getFirstName());
       oldEmployee.setLastName(employee.getLastName());
       oldEmployee.setHourlyRate(employee.getHourlyRate());
-      oldEmployee.setAge(employee.getAge());
+      oldEmployee.setDob(employee.getDob());
       oldEmployee.setJobTitle(employee.getJobTitle());
       oldEmployee.setRole(employee.getRole());
    }

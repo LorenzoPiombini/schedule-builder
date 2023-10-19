@@ -1,5 +1,6 @@
 package com.softwaremanager.schedulebuilder.Entity;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,7 +22,6 @@ import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -49,9 +49,8 @@ public class Employee {
     @Column(name = "last_name")
     private String lastName;
 
-    @Digits(integer = 2, fraction = 0, message = "Please enter a valid age number")
     @Column(name = "age")
-    private int age;
+    private LocalDate dob;
 
     @DecimalMin(value = "7.0", inclusive = true, message = "Please enter at least the minimum wage")
     @DecimalMax(value = "100.0", inclusive = false, message = "Please enter an hourly rate smaler than $ 100.0")
@@ -78,10 +77,10 @@ public class Employee {
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<TimeCard> timeCards;
 
-    public Employee(String firstName, String lastName, int i, Double hourlyRate, String jobTitle, Role role) {
+    public Employee(String firstName, String lastName, LocalDate dob, Double hourlyRate, String jobTitle, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.age = i;
+        this.dob = dob;
         this.hourlyRate = hourlyRate;
         this.jobTitle = jobTitle;
         this.role = role;
