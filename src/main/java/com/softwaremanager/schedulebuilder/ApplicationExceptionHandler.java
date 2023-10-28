@@ -25,6 +25,7 @@ import com.softwaremanager.schedulebuilder.Exception.EmployeeClockedOutAlreadyEx
 import com.softwaremanager.schedulebuilder.Exception.EmployeeNotClockedInException;
 import com.softwaremanager.schedulebuilder.Exception.EmployeeNotFoundException;
 import com.softwaremanager.schedulebuilder.Exception.NoDataForLaborCostException;
+import com.softwaremanager.schedulebuilder.Exception.NotAuthorizedUsers;
 import com.softwaremanager.schedulebuilder.Exception.ErrorResponse;
 
 import com.softwaremanager.schedulebuilder.Exception.ShiftNotFoundException;
@@ -56,7 +57,7 @@ public class ApplicationExceptionHandler extends ResponseEntityExceptionHandler 
     }
 
     @ExceptionHandler({ EmployeeAlreadyClockedInException.class, EmployeeNotClockedInException.class,
-            EmployeeClockedOutAlreadyException.class })
+            EmployeeClockedOutAlreadyException.class, NotAuthorizedUsers.class })
     public ResponseEntity<ErrorResponse> handleEmployeeAlreadyClockIn(RuntimeException ex) {
         return new ResponseEntity<ErrorResponse>(new ErrorResponse(Arrays.asList(ex.getMessage())),
                 HttpStatus.BAD_REQUEST);

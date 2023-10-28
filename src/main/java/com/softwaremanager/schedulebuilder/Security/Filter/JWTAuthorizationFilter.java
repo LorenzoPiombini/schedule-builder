@@ -36,6 +36,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 .build()
                 .verify(token)
                 .getSubject();
+        System.out.println(token);
 
         Authentication auth = new UsernamePasswordAuthenticationToken(user, null, Arrays.asList());
         SecurityContextHolder.getContext().setAuthentication(auth);

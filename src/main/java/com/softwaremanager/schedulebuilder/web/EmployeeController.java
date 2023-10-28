@@ -34,12 +34,14 @@ public class EmployeeController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Employee> showEmployee(@PathVariable Long id) {
+
         return new ResponseEntity<Employee>(service.getEmployee(id), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<Employee> createEmployee(@Valid @RequestBody Employee employee) {
         return new ResponseEntity<Employee>(service.saveEmployee(employee), HttpStatus.CREATED);
+
     }
 
     @PutMapping("/{employeeId}")

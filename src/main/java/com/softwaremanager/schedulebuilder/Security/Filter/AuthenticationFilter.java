@@ -19,12 +19,14 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.AllArgsConstructor;
 
-@AllArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private CustomAuthenticationManager authManager;
+
+    public AuthenticationFilter(CustomAuthenticationManager authManager) {
+        this.authManager = authManager;
+    }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
